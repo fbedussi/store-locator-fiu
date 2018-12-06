@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <button class="searchOpener" is="search-opener"></button>
+    <style>
+        left-panel {
+                display: flex;
+                flex-direction: column;
+                margin: var(--padding);
+                padding: var(--padding);
+                position: absolute;
+                z-index: 20;
+                background-color: white;
+                height: calc(100vh - (var(--padding) * 2));
+                width: calc(100% - (var(--padding) * 2));
+                box-shadow: 4px 4px 4px lightgray;
+                will-change: transform;
+            }
+
+            .storesAndStoreDetails {
+                position: relative;
+                overflow: hidden;
+                flex: 1;
+            }
+            
+            @media screen and (min-width: 900px) {
+                left-panel.hiddenLight,
+                left-panel {
+                    visibility: visible;
+                    animation: slide-in-left;
+                    width: 24rem;
+                }
+            }
+        </style>
+
+    <left-panel>
+        <search-box>
+            <style>
+                search-box {
+                        --border-thickness: 2px;
+                        margin-bottom: 1rem;
+                    }
+                    .searchInputAndButtons {
+                        display: flex;
+                    }
+                    .searchInputAndIcons {
+                        display: flex;
+                        border: solid var(--border-thickness) black;
+                        margin-right: 0.5rem;
+                        flex: 1;
+                    }
+                    search-suggestions {
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        bottom: 0;
+                        transform: translateY(calc(100% + 2px));
+                    }
+                    search-suggestions [open="true"] ul {
+                        border: solid 1px lightgray;
+                        box-shadow: 2px 2px 2px lightgray;
+                    }
+                    search-suggestions ul {
+                        background-color: white;
+                        padding: var(--padding);
+                    }
+                    .searchIcon {
+                        width: var(--input-height);
+                        height: var(--input-height);
+                        padding: var(--padding);
+                    }
+                    .searchInput {
+                        flex: 1;
+                        position: relative;
+                    }
+                    .geolocalizeIcon {
+                        height: calc(var(--input-height) + (var(--border-thickness) * 2));
+                        width: calc(var(--input-height) + (var(--border-thickness) * 2));
+                    }
+                </style>
+            <div class="searchInputAndButtons">
+                <label for="searchInput" class="visuallyHidden">Cerca un negozio</label>
+                <div class="searchInputAndIcons">
+                    <svg version="1.1" class="searchIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                        xml:space="preserve">
+                        <g>
+                            <circle fill="none" stroke-width="2" stroke-miterlimit="10" cx="21" cy="21" r="20"></circle>
+                            <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="35" y1="35" x2="41" y2="41"></line>
+                            <rect x="46.257" y="37.065" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 121.9178 50.5)"
+                                fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" width="8.485"
+                                height="26.87"></rect>
+                        </g>
+                    </svg>
+                    <div class="searchInput">
+                        <input id="searchInput" type="text" placeholder="Inserisci una località" data-fiu data-oninput="handleInput"
+                            data-value="serchTerm">
+                        <search-suggestions>
+                            <collapsable-tab open="false">
+                                <ul>
+
+                                </ul>
+                            </collapsable-tab>
+                        </search-suggestions>
+                    </div>
+                    <button class="iconButton clearSearch" onclick="return document._componentRegistry[2]['handleReset'](event)">
+                        <span class="icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                                xml:space="preserve">
+                                <g>
+                                    <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="18.947" y1="17.153"
+                                        x2="45.045" y2="43.056"></line>
+                                </g>
+                                <g>
+                                    <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="19.045" y1="43.153"
+                                        x2="44.947" y2="17.056"></line>
+                                </g>
+                            </svg></span>
+                        <span class="visuallyHidden">clear search</span>
+                    </button>
+                </div>
+                <button class="iconButton btn geolocalizeIcon" onclick="return document._componentRegistry[2]['handleGeoLocation'](event)">
+                    <span class="icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                            xml:space="preserve">
+                            <g>
+                                <circle fill="none" stroke-width="2" stroke-miterlimit="10" cx="32" cy="22" r="6"></circle>
+                                <path fill="none" stroke-width="2" stroke-miterlimit="10" d="M53,22.735C52.948,10.73,43.599,1,32,1s-21,9.73-21,21.735C11,38.271,31.965,63,31.965,63S53.069,38.271,53,22.735z"></path>
+                            </g>
+                        </svg></span>
+                    <span class="visuallyHidden">geolocate me</span>
+                </button>
+            </div>
+        </search-box>
+        <results-number>
+            <style>
+                results-number {
+                    padding: var(--padding);
+                }   
+            </style>
+            <div data-fiu data-value="storeNumberLabel">loading stores</div>
+        </results-number>
+        </div>
+        <div class="storesAndStoreDetails">
+            <stores-list>
+                <style>
+                    stores-list ul {
+                    padding: var(--padding);
+                    height: 100%;
+                    overflow-y: scroll;
+                }
+                stores-list ul::-webkit-scrollbar {
+                    width: 0.3em;
+                }
+                stores-list ul::-webkit-scrollbar-track {
+                    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                }
+                stores-list ul li {
+                    border-bottom: solid 1px lightgray;
+                    padding: 1em 0;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                stores-list ul li:first-child {
+                    border-top: solid 1px lightgray;
+                }
+                stores-list ul::-webkit-scrollbar-thumb {
+                    background-color: black;
+                    outline: 1px solid slategrey;
+                }
+                
+                stores-list ul .action {
+                    max-width: 50px;
+                    cursor: pointer;
+                }
+
+                .storeName {
+                    margin-bottom: 0.5em;
+                }
+
+                .storePhone .icon {
+                    width: 1em;
+                    height: 1em;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            </style>
+                <ul data-fiu data-for-each="stores">
+                    <template>
+                        <li>
+                            <div>
+                                <div class="storeName" data-fiu data-value="name"></div>
+                                <div class="storePhone">
+                                    <span class="icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="64px"
+                                            height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                                            xml:space="preserve">
+                                            <g>
+                                                <rect x="16" y="1" fill="none" stroke-width="2" stroke-miterlimit="10"
+                                                    width="32" height="62"></rect>
+                                                <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="28" y1="5"
+                                                    x2="36" y2="5"></line>
+                                                <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="16" y1="51"
+                                                    x2="48" y2="51"></line>
+                                                <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="16" y1="9"
+                                                    x2="48" y2="9"></line>
+                                                <circle fill="none" stroke-width="2" stroke-linejoin="bevel"
+                                                    stroke-miterlimit="10" cx="32" cy="57" r="2"></circle>
+                                            </g>
+                                        </svg></span>
+                                    <span class="text" data-fiu data-value="phone"></span>
+                                </div>
+                            </div>
+                            <div class="action">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                                    xml:space="preserve">
+                                    <g>
+                                        <polyline fill="none" stroke-width="2" stroke-linejoin="bevel"
+                                            stroke-miterlimit="10" points="27,15 44,32  27,49" />
+                                    </g>
+                                </svg>
+                            </div>
+                        </li>
+                    </template>
+
+                </ul>
+            </stores-list>
+        </div>
+    </left-panel>
+    <stores-map></stores-map>
+
+    <!-- load webcomponents loader, which dynamically loads only the necessary polyfills -->
+    <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="https://unpkg.com/@ungap/custom-elements-builtin"></script>
+    <script src="morphdom-umd.js"></script>
+    <script src="index.js" type="module"></script>
+</body>
+
+</html>
