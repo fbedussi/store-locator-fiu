@@ -26,7 +26,8 @@ class StoresList extends HTMLElement {
         }, 900));
     }
 
-    handleStoreClick(ev, store) {
+    handleStoreClick(ev) {
+        const store = this.state.stores.find((store) => store.id === ev.target.dataset.storeId);
         dispatch(openStoreDetailsAction(store));
     }
 }

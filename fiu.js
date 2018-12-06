@@ -1,7 +1,45 @@
+function getElements(container) {
+    return [].slice.call(container.querySelectorAll('[data-fiu]'));
+}
+
+function setControlledElements(elements) {
+    return elements
+        .filter((element) => element.dataset && element.dataset.value)
+        .map((ref) => ({
+            ref,
+            bindTo: ref.dataset && ref.dataset.value,
+        }));
+}
+
+function getControlledElements(controlledElements, stateKeys) {
+    return controlledElements
+        .filter((element) => stateKeys.includes(element.bindTo));
+}
+
+function setElementContentByState(state) {
+    return function setElementContent(element) {
+        if (element.ref.tagName.toLowerCase() === 'input') {
+            element.ref.value = state[element.bindTo];
+        } else {
+            element.ref.textContent = state[element.bindTo];
+        }
+    }
+}
+
 export function extendComponent(clazz, attributes = []) {
     clazz.prototype.setState = function(stateUpdate) {
         this.state = this.state ? {...this.state, ...stateUpdate} : {...stateUpdate};
         this.update(this.state);
+    }
+
+    clazz.prototype.registerEvents = function(elements) {
+        [].concat(elements).forEach((element) => {
+            if (!element.dataset) {
+                return;
+            } 
+            const events = Object.keys(element.dataset).filter((key) => key.substring(0, 2) === 'on');
+            events.forEach((event) => element.addEventListener(event.substring(2), this[element.dataset[event]].bind(this)));
+        });
     }
 
     clazz.prototype.update = function() {
@@ -9,60 +47,31 @@ export function extendComponent(clazz, attributes = []) {
 
         this.controlledElements
             .filter((element) => stateKeys.includes(element.bindTo))
-            .forEach(this.setValue.bind(this));
+            .forEach(setElementContentByState(this.state));
 
         this.forElements
             .filter((element) => stateKeys.includes(element.bindTo))
             .forEach((element) => {
                 element.ref.innerHTML = '';
                 this.state[element.bindTo].forEach((stateVal) => {
-                    const stateKeys = Object.keys(stateVal);
-                    
                     const template = element.template.content.children[0].cloneNode(true);
-                    const elements = [].slice.call(template.querySelectorAll('[data-fiu]'));
-                    const controlledElements = elements
-                        .filter((element) => element.dataset && element.dataset.value)
-                        .map((ref) => ({
-                            ref,
-                            bindTo: ref.dataset && ref.dataset.value,
-                        }));
-                    const controlledElements2 = controlledElements
-                        .filter((element) => stateKeys.includes(element.bindTo));
+                    const elements = getElements(template);
+                    this.registerEvents(elements);
+                    const controlledElements = getControlledElements(setControlledElements(elements), Object.keys(stateVal));                       
                     
-                    controlledElements2
-                        .forEach(function(element) {
-                            if (element.ref.tagName.toLowerCase() === 'input') {
-                                element.ref.value = stateVal[element.bindTo];
-                            } else {
-                                element.ref.textContent = stateVal[element.bindTo];
-                            }                    
-                        })
-                    ;
+                    controlledElements.forEach(setElementContentByState(stateVal));
+                    
                     element.ref.appendChild(template)
                 })
             })
-
-    }
-
-    clazz.prototype.setValue = function(element) {
-        if (element.ref.tagName.toLowerCase() === 'input') {
-            element.ref.value = this.state[element.bindTo];
-        } else {
-            element.ref.textContent = this.state[element.bindTo];
-        }
     }
 
     clazz.prototype._connectedCallback = clazz.prototype.connectedCallback;
     clazz.prototype.connectedCallback = function() {
         
-        this.elements = [].slice.call(this.querySelectorAll('[data-fiu]'));
+        this.elements = getElements(this);
     
-        this.controlledElements = this.elements
-            .filter((element) => element.dataset && element.dataset.value)
-            .map((ref) => ({
-                ref,
-                bindTo: ref.dataset && ref.dataset.value,
-            }));
+        this.controlledElements = setControlledElements(this.elements);
     
         this.forElements = this.elements
             .filter((element) => element.dataset && element.dataset.forEach)
@@ -72,13 +81,8 @@ export function extendComponent(clazz, attributes = []) {
                 template: ref.querySelector('template'),
             }));
             
-        this.elements.forEach((element) => {
-            if (!element.dataset) {
-                return;
-            } 
-            const events = Object.keys(element.dataset).filter((key) => key.substring(0, 2) === 'on');
-            events.forEach((event) => element.addEventListener(event.substring(2), this[element.dataset[event]].bind(this)));
-        });
+        this.registerEvents(this.elements);
+        
         clazz.prototype._connectedCallback.call(this);
     }
 
