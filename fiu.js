@@ -4,13 +4,14 @@ function getElements(container) {
 
 function setBindedElements(elements) {
     return elements
-        .filter((element) => element.dataset && element.dataset.bind)
+        //.filter((element) => element.dataset && element.dataset.bind)
         .map((ref) => {
-            const bind = JSON.parse(ref.dataset.bind);
+            const bind = ref.dataset.bind ? JSON.parse(ref.dataset.bind) : undefined;
 
             return {
                 ref,
                 bind,
+                if: ref.dataset.if,
             };
         });
 }
@@ -22,18 +23,24 @@ function getControlledElements(controlledElements, stateKeys) {
 
 function updateBindedElement(state) {
     return function setElementContent(element) {
-        if (element.bind.value && state[element.bind.value]) {
-            if (element.ref.tagName.toLowerCase() === 'input') {
-                element.ref.value = state[element.bind.value];
-            } else {
-                element.ref.textContent = state[element.bind.value];
+        if (element.bind) {
+            if (element.bind.value && state[element.bind.value]) {
+                if (element.ref.tagName.toLowerCase() === 'input') {
+                    element.ref.value = state[element.bind.value];
+                } else {
+                    element.ref.textContent = state[element.bind.value];
+                }
+            }
+    
+            if (element.bind.attr) {
+                const attr = element.bind.attr;
+                const key = Object.keys(element.bind.attr)[0];
+                element.ref.setAttribute(key, state[attr[key]]);
             }
         }
 
-        if (element.bind.attr) {
-            const attr = element.bind.attr;
-            const key = Object.keys(element.bind.attr)[0];
-            element.ref.setAttribute(key, state[attr[key]]);
+        if (element.if) {
+            element.ref.hidden = !Boolean(state[element.if]);
         }
     }
 }

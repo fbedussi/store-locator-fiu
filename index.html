@@ -363,14 +363,12 @@
                         <div class="store_servicesTitle">Store services</div>
                         <ul class="store_services">
                             <li data-fiu data-if="hasMadeToMeasure">Made to measure</li>
-                            <!--         ${store.hasTailoring ? '<li>Tailoring</li>' : ''}
-                                    ${store.gifCardAccepted ? '<li>Gift card accepted</li>' : ''}
-                                    ${store.hasWiFi ? '<li>Wi-Fi</li>' : ''}
-                                    ${store.reserveInStore ? '<li>Reserve in store</li>' : ''}
-                                    ${store.pickUpInStore ? '<li>Pick-up in store</li>' : ''}
-                                    ${store.returnInStore ? '<li>Return in store</li>' : ''}
-                                    ${store.clickFromStore ? '<li>Click from store</li>' : ''}
-                                    ${store.bookable ? '<li>Bookable</li>' : ''} -->
+                            <li data-fiu data-if="hasTailoring">Tailoring</li>
+                            <li data-fiu data-if="gifCardAccepted">Gift card accepted</li>
+                            <li data-fiu data-if="hasWiFi">Wi-Fi</li>
+                            <li data-fiu data-if="pickUpInStore">Pick-up in store</li>
+                            <li data-fiu data-if="clickFromStore">Click from store</li>
+                            <li data-fiu data-if="bookable">Bookable</li>
                         </ul>
                     </div>
                 </div>
