@@ -194,7 +194,7 @@
             </style>
                 <ul data-fiu data-for-each="stores">
                     <template>
-                        <li >
+                        <li>
                             <div data-fiu data-onclick="handleStoreClick" data-bind='{"attr": {"data-store-id": "id"}}'>
                                 <div class="storeName" data-fiu data-bind='{"value": "name"}'></div>
                                 <div class="storePhone">
@@ -233,7 +233,148 @@
 
                 </ul>
             </stores-list>
-            <store-details></store-details>
+            <store-details>
+                <style>
+                    .storeDetails {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-color: white;
+                            }
+                            .backButton {
+                                background-color: black;
+                                color: white;
+                                display: flex;
+                                width: 100%;
+                                align-items: center;
+                                margin-bottom: 1rem;
+                            }
+                            .backIcon {
+                                width: var(--input-height);
+                                height: var(--input-height); 
+                                display: inline-block;
+                                stroke: white;
+                                width: 100%;
+                                height: 100%;
+                            }
+                            .storeDetails .store {
+                                padding: var(--padding);
+                            }
+                            .storeDetails .store_name {
+                                font-size: 1.2rem;
+                                margin-bottom: 0.5rem;
+                                font-weight: bold;
+                            }
+                            .storeDetails .store_mail,
+                            .storeDetails .store_phone {
+                                display: flex;
+                                align-items: center;
+                            }
+                            .storeDetails .store_mail {
+                                margin-bottom: 0.25rem;
+                            }
+                            .storeDetails .store_phone {
+                                margin-bottom: 0.75rem;
+                            }
+                            .storeDetails .icon {
+                                width: 1rem;
+                                height: 1rem;
+                                margin-right: 0.5rem;
+                                display: inline-block;
+                                vertical-align: middle;
+                            }
+                            .storeDetails .store_mail,
+                            .storeDetails .store_categories {
+                                margin-bottom: 0.5rem;
+                            }
+                            .storeDetails .store_categories li {
+                                display: inline;
+                            }
+                            .storeDetails .store_categories li::after {
+                                content: ", ";
+                            }
+                            .storeDetails .store_categories li:last-child::after {
+                                content: ".";
+                            }
+                            .storeDetails .store_categoriesTitle,
+                            .storeDetails .store_servicesTitle {
+                                font-size: 1.2rem;
+                                margin-bottom: 0.25rem;
+                            }
+                        </style>
+                <div class="storeDetails" data-fiu data-bind='{"attr": {"class": "animationClass"}}'>
+                    <button class="backButton" data-fiu data-onclick="closePanel">
+                        <span class="icon">
+                            <svg class="backIcon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                                xml:space="preserve">
+                                <g>
+                                    <polyline fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-miterlimit="10"
+                                        points="37,15 20,32 37,49" />
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="text">close</span>
+                    </button>
+
+                    <div class="store">
+                        <div class="store_name" data-fiu data-bind='{"value": "name"}'></div>
+                        <div class="store_phone">
+                            <span class="icon">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                                    xml:space="preserve">
+                                    <g>
+                                        <rect x="16" y="1" fill="none" stroke-width="2" stroke-miterlimit="10" width="32"
+                                            height="62" />
+                                        <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="28" y1="5" x2="36"
+                                            y2="5" />
+                                        <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="16" y1="51" x2="48"
+                                            y2="51" />
+                                        <line fill="none" stroke-width="2" stroke-miterlimit="10" x1="16" y1="9" x2="48"
+                                            y2="9" />
+                                        <circle fill="none" stroke-width="2" stroke-linejoin="bevel" stroke-miterlimit="10"
+                                            cx="32" cy="57" r="2" />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="text" data-fiu data-bind='{"value": "phone"}'></span>
+                        </div>
+                        <div class="store_mail">
+                            <span class="icon">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
+                                    xml:space="preserve">
+                                    <g>
+                                        <rect x="1" y="13" fill="none" stroke-width="2" stroke-miterlimit="10" width="62"
+                                            height="37" />
+                                        <polyline fill="none" stroke-width="2" stroke-miterlimit="10" points="1,13 32,33 63,13 	" />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="text"><a href="mailto:${store.mail}" data-fiu data-bind='{"value": "mail"}'></a></span>
+                        </div>
+                        <div class="store_categoriesTitle">Store categories</div>
+                        <ul class="store_categories">
+
+                        </ul>
+                        <div class="store_servicesTitle">Store services</div>
+                        <ul class="store_services">
+                            <li data-fiu data-if="hasMadeToMeasure">Made to measure</li>
+                            <!--         ${store.hasTailoring ? '<li>Tailoring</li>' : ''}
+                                    ${store.gifCardAccepted ? '<li>Gift card accepted</li>' : ''}
+                                    ${store.hasWiFi ? '<li>Wi-Fi</li>' : ''}
+                                    ${store.reserveInStore ? '<li>Reserve in store</li>' : ''}
+                                    ${store.pickUpInStore ? '<li>Pick-up in store</li>' : ''}
+                                    ${store.returnInStore ? '<li>Return in store</li>' : ''}
+                                    ${store.clickFromStore ? '<li>Click from store</li>' : ''}
+                                    ${store.bookable ? '<li>Bookable</li>' : ''} -->
+                        </ul>
+                    </div>
+                </div>
+            </store-details>
         </div>
     </left-panel>
     <stores-map></stores-map>

@@ -12,7 +12,7 @@ export default {
     searchTerm: '',
     userLocation: null,
     mapInitialCoords: null,
-    openeStore: null,
+    openedStore: null,
     filters: {
         search: null,
         coords: null,
