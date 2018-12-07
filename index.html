@@ -101,7 +101,7 @@
                     </svg>
                     <div class="searchInput">
                         <input id="searchInput" type="text" placeholder="Inserisci una località" data-fiu data-oninput="handleInput"
-                            data-value="serchTerm">
+                            data-bind='{"value": "serchTerm"}'>
                         <search-suggestions>
                             <collapsable-tab open="false">
                                 <ul>
@@ -110,7 +110,7 @@
                             </collapsable-tab>
                         </search-suggestions>
                     </div>
-                    <button class="iconButton clearSearch" onclick="return document._componentRegistry[2]['handleReset'](event)">
+                    <button class="iconButton clearSearch" data-fiu data-onclick="handleReset">
                         <span class="icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
                                 xml:space="preserve">
@@ -126,7 +126,7 @@
                         <span class="visuallyHidden">clear search</span>
                     </button>
                 </div>
-                <button class="iconButton btn geolocalizeIcon" onclick="return document._componentRegistry[2]['handleGeoLocation'](event)">
+                <button class="iconButton btn geolocalizeIcon" data-onclick="handleGeoLocation">
                     <span class="icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"
                             xml:space="preserve">
@@ -145,7 +145,7 @@
                     padding: var(--padding);
                 }   
             </style>
-            <div data-fiu data-value="storeNumberLabel">loading stores</div>
+            <div data-fiu data-bind='{"value": "storeNumberLabel"}'>loading stores</div>
         </results-number>
         </div>
         <div class="storesAndStoreDetails">
@@ -195,8 +195,8 @@
                 <ul data-fiu data-for-each="stores">
                     <template>
                         <li >
-                            <div data-fiu data-onclick="handleStoreClick" data-data-store-id="id">
-                                <div class="storeName" data-fiu data-value="name"></div>
+                            <div data-fiu data-onclick="handleStoreClick" data-bind='{"attr": {"data-store-id": "id"}}'>
+                                <div class="storeName" data-fiu data-bind='{"value": "name"}'></div>
                                 <div class="storePhone">
                                     <span class="icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="64px"
@@ -215,7 +215,7 @@
                                                     stroke-miterlimit="10" cx="32" cy="57" r="2"></circle>
                                             </g>
                                         </svg></span>
-                                    <span class="text" data-fiu data-value="phone"></span>
+                                    <span class="text" data-fiu data-bind='{"value": "phone"}'></span>
                                 </div>
                             </div>
                             <div class="action">
@@ -233,6 +233,7 @@
 
                 </ul>
             </stores-list>
+            <store-details></store-details>
         </div>
     </left-panel>
     <stores-map></stores-map>
