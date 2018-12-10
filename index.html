@@ -357,9 +357,11 @@
                             <span class="text"><a href="mailto:${store.mail}" data-fiu data-bind='{"value": "mail"}'></a></span>
                         </div>
                         <div class="store_categoriesTitle">Store categories</div>
-                        <ul class="store_categories">
-
-                        </ul>
+                        <!-- <ul class="store_categories" data-fiu data-for-each="productCategory">
+                            <template>
+                                <li data-fiu data-bind='{"value": "name"}'></li>
+                            </template>
+                        </ul> -->
                         <div class="store_servicesTitle">Store services</div>
                         <ul class="store_services">
                             <li data-fiu data-if="hasMadeToMeasure">Made to measure</li>
