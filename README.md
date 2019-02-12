@@ -1,3 +1,3 @@
-# Store locator made up with web components
+# Store locator fiu
 
-A web component demo project
+A POC for a framework with traditional server side rendering, custom directives and wen components
